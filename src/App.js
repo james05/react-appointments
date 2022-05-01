@@ -5,6 +5,7 @@ import AddAppointment from "./components/AddAppointment";
 
 import AppointmentDetails from "./components/AppointmentDetails";
 
+
 function App() {
   let [appointmentList, setAppointmentList] = useState([]);
   let [query, setQuery] = useState("");
@@ -40,6 +41,12 @@ function App() {
     fetchData()
   }, [fetchData]);
 
+  const saveAppointment = function(appointment) {
+    let appointments = appointmentList.concat(appointment);
+
+    setAppointmentList(appointments);
+  };
+
   return (
     <div className="App container mx-auto mt-3 font-thin">
       <header className="App-header">
@@ -47,7 +54,7 @@ function App() {
           <BiCalendar className="inline-block text-red-400 align-top" />Your Appointments
         </h1>
 
-        <AddAppointment />
+        <AddAppointment saveAppointment={saveAppointment} />
 
         <Search query={query}
                 onQueryChange={(query) => setQuery(query)}
