@@ -8,6 +8,8 @@ import AppointmentDetails from "./components/AppointmentDetails";
 function App() {
   let [appointmentList, setAppointmentList] = useState([]);
   let [query, setQuery] = useState("");
+  let [sortBy, setSortBy] = useState("petName");
+  let [orderDir, setOrderDir] = useState("asc");
 
   const filteredAppointments = appointmentList.filter(
     item => {
@@ -17,6 +19,12 @@ function App() {
         || item.aptNotes.toLowerCase().includes(query.toLowerCase())
       );
     }
+  ).sort((a, b) => {
+    let order = orderDir === 'asc' ? 1 : -1;
+
+    return a[sortBy].toLowerCase() < b[sortBy].toLowerCase()
+      ?  -1 * order : 1 * order;
+  }
   );
 
   const fetchData = useCallback(() => {
@@ -42,7 +50,11 @@ function App() {
         <AddAppointment />
 
         <Search query={query}
-                onQueryChange={(query) => setQuery(query)} />
+                onQueryChange={(query) => setQuery(query)}
+                sortBy={sortBy}
+                onSortByChange={(sort) => setSortBy(sort)}
+                orderDir={orderDir}
+                onSortOrderChange={(sortOrder) => setOrderDir(sortOrder)} />
       </header>
 
 
